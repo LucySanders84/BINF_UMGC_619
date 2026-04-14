@@ -8,25 +8,33 @@
 
 RAW_DIR="$1"
 SRAs=("${@:2}")
-
+download=1
 # For each SRA ID
 for sra in "${SRAs[@]}"; do
-    fastq_1="$RAW_DIR/${sra}_1.fastq"
-    fastq_2="$RAW_DIR${sra}_2.fastq"
+    fastq_1="${sra}_1.fastq"
+    fastq_2="${sra}_2.fastq"
 
     # check if paired end read fastq files exist already
-    if [[ -f "$fastq_1" && -f "$fastq_2" ]]; then
-        # Alert user that pipeline will use the stored fastq files
-        echo "$fastq_1 and $fastq_2 exist."
-        echo "Using stored fastq files. To download new fastq files, delete existing from storage."
-    else
+    bash scripts/trace.sh "Checking for $sra fastq files"
+    if [[ -f "$RAW_DIR/$fastq_1" && -f "$RAW_DIR/$fastq_2" ]]; then
+        # Prompt user to continue with existing files or download new files
+        echo "$fastq_1 and $fastq_2 already exist in $RAW_DIR."
+        read -r -p "Continue analysis using existing ${sra} fastq files (y or n)? " use_existing
+        # if user response is y, set download variable to 0
+        if [[ "$use_existing" == "y" ]]; then
+            download=0
+        fi
+    fi
+    # if download required:
+    if [[ $download == 1 ]]; then
         # use SRA toolkit's prefetch tool to obtain each run
-        echo "Fetching $sra...."
+        bash scripts/trace.sh "Fetching $sra"
         prefetch "$sra"
 
         # use SRA toolkit's fasterq-dump tool to split run into paired_read fastq files
-        echo "Splitting $sra into paired read fastq files..."
+        bash scripts/trace.sh "Splitting $sra into paired-read fastq files"
         fasterq-dump "$sra" --split-files -O "$RAW_DIR"
     fi
+    download=1
 done
 
