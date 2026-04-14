@@ -21,13 +21,9 @@ echo "Sample"$'\t'"Raw Reads"$'\t'"Clean Reads" >> "$data_file"
     # find read count for pre
     # find read count for post
 for sample in "${samples[@]}"; do
-  raw_reads_1="$(grep -Po '(?<=^Total Sequences\t)\d+' < "$results_dir/raw/${sample}_1_fastqc/fastqc_data.txt")"
-  raw_reads_2="$(grep -Po '(?<=^Total Sequences\t)\d+' < "$results_dir/raw/${sample}_2_fastqc/fastqc_data.txt")"
-  trimmed_reads_1="$(grep -Po '(?<=^Total Sequences\t)\d+' < "$results_dir/trimmed/${sample}_1_fastqc/fastqc_data.txt")"
-  trimmed_reads_2="$(grep -Po '(?<=^Total Sequences\t)\d+' < "$results_dir/trimmed/${sample}_2_fastqc/fastqc_data.txt")"
-  raw_reads=$(("$raw_reads_1" + "$raw_reads_2"))
-  trimmed_reads=$(("$trimmed_reads_1" + "$trimmed_reads_2"))
-  echo "$sample"$'\t'"$raw_reads"$'\t'"$trimmed_reads" >> "$data_file"
+    raw_reads="$(grep -Po '(?<=^Total Sequences\t)\d+' < "$results_dir/raw/${sample}_2_fastqc/fastqc_data.txt")"
+    trimmed_reads="$(grep -Po '(?<=^Total Sequences\t)\d+' < "$results_dir/trimmed/${sample}_2_fastqc/fastqc_data.txt")"
+    echo "$sample"$'\t'"$raw_reads"$'\t'"$trimmed_reads" >> "$data_file"
 done
 
 awk '{print $0}' < "$data_file"

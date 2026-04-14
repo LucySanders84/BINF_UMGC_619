@@ -11,3 +11,4 @@ for sample in "${samples[@]}"; do
     -h "$results_dir/${sample}_fastp.html" -j "$results_dir/${sample/}_fastp.json"
 done
 
+

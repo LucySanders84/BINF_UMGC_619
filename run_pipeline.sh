@@ -9,8 +9,9 @@ TRIMMED_DIR="data/trimmed"
 TRIMMED_RESULTS_DIR="results/trimming"
 QC_RESULTS_DIR="results/qc"
 ALIGN_DIR="data/aligned"
+REFERENCE_DIR="data/reference"
 COUNT_DIR="results/counts"
-
+reference_genome="data/reference/Pseudomonas_aeruginosa_PAO1_107.fna"
 
 # make directories
 # add check for if directories exist
@@ -35,7 +36,7 @@ COUNT_DIR="results/counts"
 # Compile pre vs post-trimming QC statistics
 bash scripts/generate_pre_vs_post_trim_qc_analysis.sh results/qc "${SRAs[@]}"
 # Perform alignment
-bash scripts/04_alignment.sh
+bash scripts/04_alignment.sh "$reference_genome" "$REFERENCE_DIR"
 
 # Perform annotation
 bash scripts/05_annotation.sh
