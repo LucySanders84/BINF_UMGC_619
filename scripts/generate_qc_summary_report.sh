@@ -36,8 +36,8 @@ for report in "${reports[@]}"; do
     IFS=',' read -ra q_scores <<< "$(awk 'BEGIN{q20=0; q30=0; count=0}
         /^>>Per base sequence quality/ {flag=1; next}
         /^>>END_MODULE/ {flag=0}
-        flag && $1 ~ /^[0-9]+$/ {if($3 <= 20) q20++; if($3 <= 30) q30++; count++ }
-        END { printf "%s,%s", q20, q30 }' "$report")"
+        flag && $1 ~ /^[0-9]+$/ {if($3 >= 20) q20++; if($3 >= 30) q30++; count++ }
+        END { printf "%s,%s", (q20 / count)*100, (q30 / count)*100 }' "$report")"
     base_Q20s+=("${q_scores[0]}")
     base_Q30s+=("${q_scores[1]}")
 

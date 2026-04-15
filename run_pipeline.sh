@@ -34,12 +34,12 @@ reference_genome="data/reference/Pseudomonas_aeruginosa_PAO1_107.fna"
 # bash scripts/02_qc.sh "$TRIMMED_DIR" "$QC_RESULTS_DIR/trimmed" "${SRAs[@]}"
 
 # Compile pre vs post-trimming QC statistics
-bash scripts/generate_pre_vs_post_trim_qc_analysis.sh results/qc "${SRAs[@]}"
+# bash scripts/generate_pre_vs_post_trim_qc_analysis.sh results/qc "${SRAs[@]}"
 # Perform alignment
-bash scripts/04_alignment.sh "$reference_genome" "$REFERENCE_DIR"
+# bash scripts/04_alignment.sh "$reference_genome" "$REFERENCE_DIR" "${SRAs[@]}"
 
 # Perform annotation
-bash scripts/05_annotation.sh
-
+# bash scripts/05_annotation.sh "$REFERENCE_DIR" "${SRAs[@]}"
+bash scripts/top_genes.sh "${SRAs[@]}"
 # Perform visualization
 bash scripts/06_visualization.R

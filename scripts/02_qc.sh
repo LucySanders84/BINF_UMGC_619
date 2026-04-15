@@ -10,28 +10,24 @@ if [[ -f "$summary_report" ]]; then
     rm "$results_dir/summary_report.tsv"
 fi
 
-
-
-
-
 # Tasks
 # For each sample
     # Generate per-sample QC reports (fastQC).
-    bash scripts/trace.sh "Performing fastQC analysis on paired-end read fastq files"
-    bash scripts/generate_fastqc_report.sh "$data_dir" "$results_dir"
+    # bash scripts/trace.sh "Performing fastQC analysis on paired-end read fastq files"
+    # bash scripts/generate_fastqc_report.sh "$data_dir" "$results_dir"
 
     # Unzip results .zip and delete .zip if successful
-    for f in "$results_dir"/*.zip; do unzip "$f" -d "$results_dir"; done
+    # for f in "$results_dir"/*.zip; do unzip "$f" -d "$results_dir"; done
 
-    rm "$results_dir"/*.zip
-    rm "$results_dir"/*.html
+    # rm "$results_dir"/*.zip
+    # rm "$results_dir"/*.html
 
 
 
     # Summarize read quality, GC content, adapter contamination, duplication
     # make summary report file and set headers
 touch "$results_dir/summary_report.tsv"
-headers="sample"$'\t'"median_quality"$'\t'"base_Q20"$'\t'"base_Q30"$'\t'"gc"$'\t'"adapter_max"$'\t'"adapter_source"$'\t'"adapter_classif"$'\t'"deduplication"$'\t'"duplication"
+headers="Sample"$'\t'"Median Quality Score"$'\t'"% >= Q20"$'\t'"% >= Q30"$'\t'"% GC Content"$'\t'"% Adapter Content"$'\t'"Adapter Type"$'\t'"Adapter Classification"$'\t'"% Deduplication"$'\t'"% Duplication"
 echo "$headers" >> "$results_dir/summary_report.tsv"
 
 # --- Summarize read quality, GC content, adapter contamination, duplication.

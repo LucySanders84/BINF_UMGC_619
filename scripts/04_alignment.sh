@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Parameters: genome reference file
+# Parameters: genome reference file, reference dir and samples
 genome="$1"
 reference_dir="$2"
 samples=("${@:3}")
@@ -26,7 +26,7 @@ else
 fi
 
 # for each sample perform alignment against genome and create sorted BAM and BAI
-for sample in "${sample[@]}"; do
+for sample in "${samples[@]}"; do
     #perform alignment pipe to samtools to create sorted BAM
     hisat2 \
       -x data/reference/genome_index \
