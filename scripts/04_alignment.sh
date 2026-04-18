@@ -1,45 +1,44 @@
 #!/usr/bin/env bash
+# Parameters:
+PROJECT="$1"
+shopt -s nullglob
 
-# Parameters: genome reference file, reference dir and samples
-genome="$1"
-reference_dir="$2"
-samples=("${@:3}")
+GENOME=$(bash scripts/get_files.sh \
+  "$PROJECT"/data/reference/*.fasta \
+  "$PROJECT"/data/reference/*.fasta.gz \
+  "$PROJECT"/data/reference/*.fna \
+  "$PROJECT"/data/reference/*.fna.gz)
 
-echo "$genome" "$reference_dir"
-# if genome file is a .gz then gunzip
-if [[ "$genome" == *.gz ]]; then
-    gunzip "$genome" > "${genome%.*}"
+# if GENOME file is a .gz then gunzip
+if [[ "$GENOME" == *.gz ]]; then
+    gunzip "$GENOME" > "${GENOME%.*}"
 fi
 
-# Tools (aligner):
-# HISAT2
-
 # check for genome index, if not found index genome
-shopt -s nullglob
-index=("$reference_dir"/genome_index*.ht2)
+index=("$PROJECT"/data/reference/genome_index*.ht2)
 
 if [ ${#index[@]} -eq 0 ]; then
     # build genome index
-    hisat2-build "$genome" data/reference/genome_index
+    hisat2-build "$GENOME" "$PROJECT"/data/reference/genome_index
 else
-    scripts/trace.sh "Genome index found"
+    bash scripts/trace.sh "Genome is already indexed, continuing to alignment"
 fi
 
-# for each sample perform alignment against genome and create sorted BAM and BAI
-for sample in "${samples[@]}"; do
+# for each sample perform alignment against GENOME and create sorted BAM and BAI
+while IFS=$'\t' read -r SAMPLE R1 R2; do
     #perform alignment pipe to samtools to create sorted BAM
+    bash scripts/trace.sh "HISAT2 is aligning $SAMPLE"
     hisat2 \
-      -x data/reference/genome_index \
-      -1 data/trimmed/"${sample}_1.fastq" \
-      -2 data/trimmed/"${sample}_2.fastq" \
-      2> logs/"${sample}_hisat2.log" \
-    | samtools sort -o data/aligned/"${sample}.bam"
-    # index BAM file
-    samtools index data/aligned/"${sample}.bam"
-done
+      -x "$PROJECT/data/reference/genome_index" \
+      -1 "$R1" \
+      -2 "$R2" \
+      2> "$PROJECT/logs/${SAMPLE}_hisat2.log" \
+    | (bash scripts/trace.sh "SAMtools is sorting ${SAMPLE}.bam"; \
+        samtools sort -o "$PROJECT/data/aligned/${SAMPLE}.bam")
 
-# Deliverables (within Group File):
-# 1-2 plots or tables of alignment metrics (total reads, mapping %).
-# Compile alignment metrics
-bash scripts/alignment_metrics.sh "${samples[@]}"
+    # index BAM file
+    bash scripts/trace.sh "SAMtools is indexing sorted ${SAMPLE}.bam"
+    samtools index "$PROJECT/data/aligned/${SAMPLE}.bam"
+done < <(bash scripts/paired_end_reads.sh "$PROJECT"/data/trimmed)
+
 

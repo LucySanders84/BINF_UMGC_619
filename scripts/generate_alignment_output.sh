@@ -1,35 +1,26 @@
 #!/usr/bin/env bash
-set -euo pipefail
+
+# Parameters:
+PROJECT="$1"
 
 # Usage:
-#   bash scripts/alignment_metrics.sh SRR14995081 SRR14995082 SRR14995083
+#   bash scripts/alignment_metrics.sh {project_name}
 #
 # Expects log files at:
 #   logs/{sample}_hisat2.log
 #
 # Writes:
-#   results/alignment_metrics.tsv
+#   {project}/reports/alignment/alignment_metrics.tsv
 
-SAMPLES=("${@}")
 
-LOG_DIR="logs"
-OUT_DIR="results/alignment"
+OUT_DIR="${PROJECT}/reports/alignment"
 OUT_FILE="${OUT_DIR}/alignment_metrics.tsv"
-
-mkdir -p "$OUT_DIR"
 
 # Header
 printf "Sample\tTotal_Reads\tMapping_Percent\n" > "$OUT_FILE"
 
-for SAMPLE in "${SAMPLES[@]}"; do
-    LOG_FILE="${LOG_DIR}/${SAMPLE}_hisat2.log"
-
-    if [ ! -f "$LOG_FILE" ]; then
-        echo "Warning: log file not found for ${SAMPLE}: ${LOG_FILE}" >&2
-        printf "%s\tNA\tNA\n" "$SAMPLE" >> "$OUT_FILE"
-        continue
-    fi
-
+while IFS=$'\t' read -r LOG_FILE; do
+    SAMPLE=$(basename "$LOG_FILE" "_hisat2.log")
     # Extract total reads from line like:
     # 1234567 reads; of these:
     TOTAL_READS=$(
@@ -47,6 +38,8 @@ for SAMPLE in "${SAMPLES[@]}"; do
     MAPPING_PERCENT=${MAPPING_PERCENT:-NA}
 
     printf "%s\t%s\t%s\n" "$SAMPLE" "$TOTAL_READS" "$MAPPING_PERCENT" >> "$OUT_FILE"
-done
+done < <(bash scripts/get_files.sh "$PROJECT"/logs/*.log)
+
+
 
 echo "Alignment metrics table written to: $OUT_FILE"

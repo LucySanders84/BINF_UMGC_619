@@ -3,8 +3,8 @@
 results_dir="$1"
 samples=("${@:2}")
 # Compare pre- and post-trimming statistics.
-# multiqc -d "$results_dir/" -o "$results_dir/multiqc/"
-
+#   get paired fastqcs
+#
 
 # Deliverables (within Group File):
 # 1 plot comparing pre/post QC.

@@ -1,14 +1,24 @@
 #!/usr/bin/env bash
-raw_dir="$1"
-trimmed_dir="$2"
-results_dir="$3"
-samples=("${@:4}")
+# Parameters:
+PROJECT="$1"
 
-for sample in "${samples[@]}"; do
+RAW_DIR="$PROJECT"/data/raw
+TRIMMED_DIR="$PROJECT"/data/trimmed
+RESULTS_DIR="$PROJECT"/results/trimming
+
+# For each *_1.fastq file in raw dir, find matching *_2.fastq and run fastp pair
+
+while IFS=$'\t' read -r SAMPLE R1 R2; do
     # Trim adapters, low-quality bases, and discard short reads (<30–50 bp).
-    fastp -i "$raw_dir/${sample}_1.fastq" -I "$raw_dir/${sample}_2.fastq" \
-    -o "$trimmed_dir/${sample}_1.fastq" -O "$trimmed_dir/${sample}_2.fastq" \
-    -h "$results_dir/${sample}_fastp.html" -j "$results_dir/${sample/}_fastp.json"
-done
+    bash scripts/trace.sh "Trimming sample with fastp: $SAMPLE"
+    fastp \
+      -i "$R1" \
+      -I "$R2" \
+      -o "$TRIMMED_DIR/${SAMPLE}_1.fastq" \
+      -O "$TRIMMED_DIR/${SAMPLE}_2.fastq" \
+      -h "$RESULTS_DIR/${SAMPLE}_fastp.html" \
+      -j "$RESULTS_DIR/${SAMPLE/}_fastp.json"
+done < <(bash scripts/paired_end_reads.sh "$RAW_DIR")
+
 
 
