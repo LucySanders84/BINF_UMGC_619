@@ -17,14 +17,11 @@ for sra in "${SRAs[@]}"; do
     # check if paired end read fastq files exist already
     bash scripts/trace.sh "Checking for $sra fastq files"
     if [[ -f "$RAW_DIR/$fastq_1" && -f "$RAW_DIR/$fastq_2" ]]; then
-        # Prompt user to continue with existing files or download new files
+        # Continue with existing files
         echo "$fastq_1 and $fastq_2 already exist in $RAW_DIR."
-        read -r -p "Continue analysis using existing ${sra} fastq files (y or n)? " use_existing
-        # if user response is y, set download variable to 0
-        if [[ "$use_existing" == "y" ]]; then
-            download=0
-        fi
+        download=0
     fi
+
     # if download required:
     if [[ $download == 1 ]]; then
         # use SRA toolkit's prefetch tool to obtain each run

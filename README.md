@@ -33,23 +33,25 @@ rna_seq_pipeline/
 Create the conda environment:
 
 ```
-conda env create -f environment/environment.yml
+conda env create -f environment.yml
 ```
 
 Activate the environment:
 
 ```
-conda activate rna_seq_env
+conda activate rna_seq_pipeline
 ```
 
 ---
 
+## Download Data
+The pipeline runs with any paired-end RNA-Seq .fastq files, a microbial genome .fasta file and .gff annotation file. 
 ## Running the Pipeline
 
 Run the full pipeline:
 
 ```
-bash scripts/run_pipeline.sh
+bash scripts/run_pipeline.sh {project_name} {data_directory} {project_destination_directory
 ```
 
 ---
@@ -87,6 +89,15 @@ Results are stored in the `results/` directory:
 * Plots and figures
 
 ---
+## Example Pipeline Run
+This repository provides an example of the pipeline using the Pseudomonas Aeruginosa genome and RNA sequencing data. 
+
+To run the example:
+
+```commandline
+bash run_PAO1_pipeline.sh
+```
+---
 
 ## Notes
 
@@ -99,5 +110,4 @@ Results are stored in the `results/` directory:
 ## Contributors
 
 * Amir Sadeghi
-* Jaquin Battle
 * Lucy Sanders

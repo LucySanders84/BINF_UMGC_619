@@ -3,16 +3,8 @@
 PROJECT="$1"
 shopt -s nullglob
 
-GENOME=$(bash scripts/get_files.sh \
-  "$PROJECT"/data/reference/*.fasta \
-  "$PROJECT"/data/reference/*.fasta.gz \
-  "$PROJECT"/data/reference/*.fna \
-  "$PROJECT"/data/reference/*.fna.gz)
-
-# if GENOME file is a .gz then gunzip
-if [[ "$GENOME" == *.gz ]]; then
-    gunzip "$GENOME" > "${GENOME%.*}"
-fi
+GENOME=$(bash scripts/get_files.sh "$PROJECT"/data/reference/*.fasta \
+  "$PROJECT"/data/reference/*.fna)
 
 # check for genome index, if not found index genome
 index=("$PROJECT"/data/reference/genome_index*.ht2)

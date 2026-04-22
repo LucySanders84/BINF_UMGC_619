@@ -3,11 +3,15 @@
 PROJECT="$1"
 DATA_DIR="$2"
 
-echo "$PROJECT $DATA_DIR"
+# Project directory
+mkdir -p projects
 
 # Create base directory
 mkdir -p "$PROJECT"
 cd "$PROJECT" || exit 1
+
+# Project directory
+mkdir -p projects
 
 # data directories
 mkdir -p data/raw
@@ -37,11 +41,6 @@ cd ../
 # Enable nullglob so if no matches exist, it expands to nothing
 shopt -s nullglob
 
-cd "$DATA_DIR" || exit 1
-ls
-
-cd ../rna_seq_pipeline || exit 1
-
 # move fastq files in DATA_DIR to data/raw
 mv "$DATA_DIR"/*.fastq -t "$PROJECT"/data/raw/
 
@@ -55,6 +54,3 @@ mv "$DATA_DIR"/*genome_index* -t "$PROJECT"/data/reference/
 shopt -u nullglob
 
 echo "$PROJECT rna_seq_pipeline project created successfully."
-
-echo "Current working directory"
-pwd

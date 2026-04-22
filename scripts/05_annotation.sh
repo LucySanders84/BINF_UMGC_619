@@ -6,14 +6,8 @@ PROJECT="$1"
 # Set nullglob so the loop won't run if no files match
 shopt -s nullglob
 
-GFF=$(bash scripts/get_files.sh \
-  "$PROJECT"/data/reference/*.gff \
-  "$PROJECT"/data/reference/*.gff.gz)
+GFF=("$PROJECT"/data/reference/*.gff)
 
-# if GFF file is a .gz then gunzip
-if [[ "$GFF" == *.gz ]]; then
-    gunzip "$GFF" > "${GFF%.*}"
-fi
 
 # Map alignments to gene features
 while IFS=$'\t' read -r BAM; do
@@ -27,7 +21,7 @@ while IFS=$'\t' read -r BAM; do
       -a "$GFF" \
       -o "$PROJECT/results/counts/$SAMPLE"_counts.txt \
       -t gene \
-      -g Alias \
+      -g ID \
       "$BAM"
 done < <(bash scripts/get_files.sh \
   "$PROJECT"/data/aligned/*.bam)
