@@ -14,16 +14,26 @@ The pipeline is implemented using Bash scripts and organized for reproducibility
 
 ---
 
-## Project Structure
+## Pipeline Structure
 
 ```
 rna_seq_pipeline/
-├── data/           # raw, trimmed, and reference data
-├── scripts/        # pipeline scripts
-├── results/        # output files and results
-├── environment/    # conda environment file
-├── docs/           # figures for report
-└── logs/           # execution logs
+├── scripts/               # pipeline scripts
+├── environment.yml        # yaml file for environment setup
+├── README.md              
+└── run_PAO1_pipeline.sh   # script to run pipeline with PAO1 dataset
+```
+
+---
+
+## Project Structure
+The pipeline creates a project with the following structure:
+```
+project_title/
+├── data/           # aligned, raw, trimmed, and reference data
+├── logs/           # execution logs
+├── reports/        # output reports
+└── results/        # output files and results
 ```
 
 ---
@@ -84,9 +94,13 @@ Results are stored in the `results/` directory:
 
 * QC reports
 * Trimmed reads
-* Alignment metrics
 * Gene counts
-* Plots and figures
+
+Analysis reports, tables and figures are stored in the `reports/` directory:
+
+* Alignment metrics
+* Gene expression tables and heatmap
+* Raw and trimmed read counts and summary reports
 
 ---
 ## Example Pipeline Run
@@ -109,5 +123,4 @@ bash run_PAO1_pipeline.sh
 
 ## Contributors
 
-* Amir Sadeghi
 * Lucy Sanders
