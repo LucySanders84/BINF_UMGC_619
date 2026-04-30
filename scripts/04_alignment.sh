@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
-# Parameters:
-PROJECT="$1"
+# Set nullglob so loops won't run if no files match
 shopt -s nullglob
 
-GENOME=$(bash scripts/get_files.sh "$PROJECT"/data/reference/*.fasta \
-  "$PROJECT"/data/reference/*.fna)
+# Parameters: PROJECT (optional, if not provided script uses env var value)
+
+# Source config file
+source scripts/config.sh
+
+# Set variables
+# get_param function is sourced from config.sh
+PROJECT=$(get_param "$1" "$PROJECT" "" "PROJECT")
+
+GENOME_FILES=("$PROJECT"/data/reference/*.fasta "$PROJECT"/data/reference/*.fna)
+GENOME="${GENOME_FILES[0]}"
 
 # check for genome index, if not found index genome
 index=("$PROJECT"/data/reference/genome_index*.ht2)

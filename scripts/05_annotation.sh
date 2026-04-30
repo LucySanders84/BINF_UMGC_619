@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 
-# Parameters:
-PROJECT="$1"
-# Prepare GFF
+# Parameters: PROJECT (optional, if not provided script uses env var value)
+
+# Source config file
+source scripts/config.sh
+
+# Set variables
+# get_param function sourced from config.sh
+PROJECT=$(get_param "$1" "$PROJECT" "" "PROJECT")
+
+# Prepare annotation file
 # Set nullglob so the loop won't run if no files match
 shopt -s nullglob
-
 GFF=("$PROJECT"/data/reference/*.gff)
-
 
 # Map alignments to gene features
 while IFS=$'\t' read -r BAM; do

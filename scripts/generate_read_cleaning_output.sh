@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-# Parameters:
-PROJECT="$1"
+# Parameters: PROJECT (optional, if not provided script uses env var value)
+
+# Source config file
+source scripts/config.sh
+
+# Set variables
+# get_param function sourced from config.sh
+PROJECT=$(get_param "$1" "$PROJECT" "" "PROJECT")
 
 FASTQC_DIR="$PROJECT/results/qc"
 REPORTS_DIR="$PROJECT/reports/read_cleaning"
@@ -19,7 +25,7 @@ done < <(bash scripts/paired_fastqcs.sh "$FASTQC_DIR/raw")
 #   1 table showing raw vs. cleaned read counts.
 
 # create summary report for trimmed reads
-bash scripts/generate_qc_summary_report.sh "$PROJECT" trimmed
+bash scripts/generate_qc_summary_report.sh "trimmed"
 
 # create tmp file
 touch read_counts.tmp

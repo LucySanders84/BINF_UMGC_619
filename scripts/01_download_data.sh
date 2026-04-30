@@ -18,7 +18,7 @@ for sra in "${SRAs[@]}"; do
     bash scripts/trace.sh "Checking for $sra fastq files"
     if [[ -f "$RAW_DIR/$fastq_1" && -f "$RAW_DIR/$fastq_2" ]]; then
         # Continue with existing files
-        echo "$fastq_1 and $fastq_2 already exist in $RAW_DIR."
+        bash scripts/trace.sh "$fastq_1 and $fastq_2 found in $RAW_DIR. Continuing"
         download=0
     fi
 

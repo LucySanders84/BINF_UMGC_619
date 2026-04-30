@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
-#Parameters:
-PROJECT="$1"
+# Parameters: PROJECT (optional, if not provided script uses env var value)
+
+# Source config file
+source scripts/config.sh
+
+# Set variables
+# get_param function sourced from config.sh
+PROJECT=$(get_param "$1" "$PROJECT" "" "PROJECT")
 REPORTS_DIR="$PROJECT"/reports/quality_control
 REPORT_FILE="$REPORTS_DIR"/read_counts_duplicates.tsv
 

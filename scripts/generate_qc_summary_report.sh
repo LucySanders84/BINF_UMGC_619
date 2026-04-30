@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 
-shopt -s nullglob
+# Parameters: QC dir, PROJECT (optional, if not provided script uses env var value)
 
-PROJECT="$1"
-QC_DIR="$2"
+# Source config file
+source scripts/config.sh
 
+# Set variables
+QC_DIR="$1"
+# get_param function sourced from config.sh
+PROJECT=$(get_param "$2" "$PROJECT" "" "PROJECT")
 RESULTS_DIR="$PROJECT/results/qc/$QC_DIR"
+DATA_TXTS="$RESULTS_DIR/fastqc_data"
+
+# set reports directory variable
 if [[ "$QC_DIR" == 'raw' ]]; then
     REPORTS_DIR="$PROJECT/reports/quality_control"
 else
     REPORTS_DIR="$PROJECT/reports/read_cleaning"
 fi
-
-DATA_TXTS="$PROJECT/results/qc/$QC_DIR/fastqc_data"
 
 # --- Summarize read quality, GC content, adapter contamination, duplication.
 
@@ -20,13 +25,11 @@ mkdir -p "$DATA_TXTS"
 
 shopt -s nullglob
 
-ls "$RESULTS_DIR"
-
 for zip in "$RESULTS_DIR"/*_fastqc.zip; do
     # extract sample name (SRR123_1 etc.)
     sample=$(basename "$zip" _fastqc.zip)
 
-    echo "Processing $sample zipped qc file"
+    bash scripts/trace.sh "Processing $sample zipped qc file"
 
     # extract fastqc_data.txt directly
     unzip -p "$zip" "*/fastqc_data.txt" > "$DATA_TXTS/${sample}_fastqc_data.txt"
@@ -44,7 +47,7 @@ get_max() {
 }
 
 while IFS=$'\t' read -r SAMPLE R1 R2; do
-    echo "Gathering report data for" "$SAMPLE"
+    bash scripts/trace.sh "Gathering report data for $SAMPLE"
     read_count=$(grep -Po '(?<=^Total Sequences[[:blank:]])\d*' < "$R1")
 
     median_qualities=()
@@ -137,6 +140,7 @@ while IFS=$'\t' read -r SAMPLE R1 R2; do
 
 done < <(bash scripts/paired_fastqcs.sh "$DATA_TXTS")
 
+bash scripts/trace.sh "Writing summary report for $QC_DIR reads"
 mv summary.tmp "$REPORTS_DIR/read_summary_report.tsv"
 
 

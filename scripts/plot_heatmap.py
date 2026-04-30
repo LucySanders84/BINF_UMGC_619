@@ -46,6 +46,3 @@ plt.tight_layout()
 
 # Save figure
 plt.savefig(f"{args.project}/reports/annotation_quantification/heatmap_top10.png", dpi=300)
-
-# Show plot
-plt.show()

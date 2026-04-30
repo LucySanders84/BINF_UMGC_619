@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# Parameters:
-    # $1 project name
-    # $2 fastq type (raw or trimmed)
+# Parameters: fastq type (raw or trimmed), PROJECT (optional, if not provided script uses env var value)
 
-PROJECT="$1"
-FASTQ_TYPE="$2"
+# Source config file
+source scripts/config.sh
 
-bash scripts/trace.sh "Performing fastQC analysis on the following $FASTQ_TYPE paired-end read fastq files"
+# Set variables
+FASTQ_TYPE="$1"
+# get_param function sourced from config.sh
+PROJECT=$(get_param "$2" "$PROJECT" "" "PROJECT")
+
+bash scripts/trace.sh "Performing fastQC analysis on $FASTQ_TYPE paired-end read fastq files"
 
 # Perform fastQC analysis
 fastqc "$PROJECT"/data/"$FASTQ_TYPE"/*.fastq -o "$PROJECT"/results/qc/"$FASTQ_TYPE"/ -t 8

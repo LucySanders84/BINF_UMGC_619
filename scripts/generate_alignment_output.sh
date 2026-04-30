@@ -1,18 +1,13 @@
 #!/usr/bin/env bash
 
-# Parameters:
-PROJECT="$1"
+# Parameters: PROJECT (optional, if not provided script uses env var value)
 
-# Usage:
-#   bash scripts/alignment_metrics.sh {project_name}
-#
-# Expects log files at:
-#   logs/{sample}_hisat2.log
-#
-# Writes:
-#   {project}/reports/alignment/alignment_metrics.tsv
+# Source config file
+source scripts/config.sh
 
-
+# Set variables
+# get_param function sourced from config.sh
+PROJECT=$(get_param "$1" "$PROJECT" "" "PROJECT")
 OUT_DIR="${PROJECT}/reports/alignment"
 OUT_FILE="${OUT_DIR}/alignment_metrics.tsv"
 
@@ -21,25 +16,19 @@ printf "Sample\tTotal_Reads\tMapping_Percent\n" > "$OUT_FILE"
 
 while IFS=$'\t' read -r LOG_FILE; do
     SAMPLE=$(basename "$LOG_FILE" "_hisat2.log")
-    # Extract total reads from line like:
-    # 1234567 reads; of these:
+    # Extract total reads
     TOTAL_READS=$(
         awk '/reads; of these:/{print $1; exit}' "$LOG_FILE"
     )
 
-    # Extract mapping percent from line like:
-    # 95.00% overall alignment rate
+    # Extract mapping percent
     MAPPING_PERCENT=$(
         awk '/overall alignment rate/{print $1; exit}' "$LOG_FILE"
     )
 
-    # Fallbacks if parsing fails
+    # Default values if parsing fails
     TOTAL_READS=${TOTAL_READS:-NA}
     MAPPING_PERCENT=${MAPPING_PERCENT:-NA}
 
     printf "%s\t%s\t%s\n" "$SAMPLE" "$TOTAL_READS" "$MAPPING_PERCENT" >> "$OUT_FILE"
 done < <(bash scripts/get_files.sh "$PROJECT"/logs/*.log)
-
-
-
-echo "Alignment metrics table written to: $OUT_FILE"
