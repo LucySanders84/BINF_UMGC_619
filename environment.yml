@@ -1,4 +1,4 @@
-name: rnaseq_pipeline
+name: rna_seq_pipeline
 channels:
   - conda-forge
   - bioconda
