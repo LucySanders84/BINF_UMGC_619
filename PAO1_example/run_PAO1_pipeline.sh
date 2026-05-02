@@ -15,6 +15,9 @@ source "$(dirname -- "${BASH_SOURCE[0]}")/config.sh"
 RESET=${1:-0}
 PROJECT_DIR="${PROJECT_PATH}/$PROJECT"
 
+# create DATA_DIR
+mkdir-p "$DATA_DIR"
+
 # create PROJECT_PATH
 mkdir -p "$PROJECT_PATH"
 
