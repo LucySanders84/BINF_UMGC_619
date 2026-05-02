@@ -17,7 +17,8 @@ GFF=("$PROJECT"/data/reference/*.gff)
 # Map alignments to gene features
 while IFS=$'\t' read -r BAM; do
     SAMPLE=$(basename "$BAM" .bam)
-    bash scripts/trace.sh "FeatureCounts is quantifying gene expression for $SAMPLE"
+    bash scripts/trace.sh "Quantifying gene expression for $SAMPLE"
+    mark_log_header "FEATURECOUNTS"
     # Run feature counts
     featureCounts \
       -T 8 \

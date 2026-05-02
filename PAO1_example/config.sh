@@ -1,0 +1,19 @@
+# LOCAL VARIABLES
+FTP_PATH="https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/006/765"
+SPECIES_FILE_ID="GCF_000006765.1_ASM676v1/GCF_000006765.1_ASM676v1_genomic"
+URL_BASE="${FTP_PATH}/${SPECIES_FILE_ID}"
+ROOT_DIR="PAO1_example"
+
+# ENVIRONMENT VARIABLES
+# Project setup
+export DATA_DIR="${ROOT_DIR}/test_data"
+export PROJECT_PATH="projects"
+export PROJECT="PAO1_2"
+
+# Reference urls
+export FNA_URL="${URL_BASE}.fna.gz"
+export GFF_URL="${URL_BASE}.gff.gz"
+
+# Sample SRA IDs
+# SRR14995084 SRR14995085 SRR14995086
+export SAMPLE_SRA_IDS="SRR14995084"

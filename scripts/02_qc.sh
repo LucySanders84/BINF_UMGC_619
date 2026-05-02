@@ -9,10 +9,11 @@ FASTQ_TYPE="$1"
 # get_param function sourced from config.sh
 PROJECT=$(get_param "$2" "$PROJECT" "" "PROJECT")
 
-bash scripts/trace.sh "Performing fastQC analysis on $FASTQ_TYPE paired-end read fastq files"
-
 # Perform fastQC analysis
+bash scripts/trace.sh "Performing QC analysis on $FASTQ_TYPE paired-end read .fastq files"
+mark_log_header "fastQC"
 fastqc "$PROJECT"/data/"$FASTQ_TYPE"/*.fastq -o "$PROJECT"/results/qc/"$FASTQ_TYPE"/ -t 8
+
 
 
 

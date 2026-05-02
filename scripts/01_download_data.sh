@@ -4,11 +4,17 @@
 # for each provided SRA run.
 # If user has not placed fastq files in data/raw directory,
 # the SRA files are downloaded and split into paired read
-# fastq files. Parameters: (raw data directory, SRA run ids)
+# fastq files.
+# Parameters: (raw data directory, SRA run ids)
 
+# Source config file
+source scripts/config.sh
+
+# Set parameters
 RAW_DIR="$1"
 SRAs=("${@:2}")
 download=1
+
 # For each SRA ID
 for sra in "${SRAs[@]}"; do
     fastq_1="${sra}_1.fastq"
@@ -25,10 +31,12 @@ for sra in "${SRAs[@]}"; do
     # if download required:
     if [[ $download == 1 ]]; then
         # use SRA toolkit's prefetch tool to obtain each run
+        mark_log_header "PREFETCH"
         bash scripts/trace.sh "Fetching $sra"
         prefetch "$sra"
 
         # use SRA toolkit's fasterq-dump tool to split run into paired_read fastq files
+        mark_log_header "FASTERQ-DUMP"
         bash scripts/trace.sh "Splitting $sra into paired-read fastq files"
         fasterq-dump "$sra" --split-files -O "$RAW_DIR"
     fi

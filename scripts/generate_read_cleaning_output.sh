@@ -18,6 +18,8 @@ while IFS=$'\t' read -r SAMPLE R1 R2; do
     TRIMMED_R1="$FASTQC_DIR/trimmed/trimmed_$SAMPLE"_1_fastqc.zip
     mv "$FASTQC_DIR/trimmed/$SAMPLE"_1_fastqc.zip "$TRIMMED_R1"
     # for each sample create multiQC with paired fastQC dirs
+    bash scripts/trace.sh "Generating compiled QC report for $SAMPLE trimmed reads"
+    mark_log_header "MULTIQC"
     multiqc -d "$R1" "$TRIMMED_R1" -o "$REPORTS_DIR/$SAMPLE/" -n "$SAMPLE"_qc_report.html
     mv  "$TRIMMED_R1" "$FASTQC_DIR/trimmed/$SAMPLE"_1_fastqc.zip
 done < <(bash scripts/paired_fastqcs.sh "$FASTQC_DIR/raw")

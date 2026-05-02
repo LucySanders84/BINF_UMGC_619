@@ -16,7 +16,8 @@ RESULTS_DIR="$PROJECT"/results/trimming
 # For each *_1.fastq file in raw dir, find matching *_2.fastq and run fastp on pair
 while IFS=$'\t' read -r SAMPLE R1 R2; do
     # Trim adapters, low-quality bases, and discard short reads (<30–50 bp).
-    bash scripts/trace.sh "Trimming $SAMPLE reads with fastp"
+    bash scripts/trace.sh "Trimming $SAMPLE reads"
+    mark_log_header "FASTP"
     fastp \
       -i "$R1" \
       -I "$R2" \

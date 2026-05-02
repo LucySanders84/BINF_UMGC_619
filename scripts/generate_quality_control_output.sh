@@ -16,6 +16,8 @@ REPORTS_DIR="$PROJECT/reports/quality_control"
 
 while IFS=$'\t' read -r SAMPLE R1 R2; do
     # for each sample create multiQC with paired fastQC dirs
+    bash scripts/trace.sh "Generating compiled QC report for $SAMPLE raw reads"
+    mark_log_header "MULTIQC"
     multiqc "$R1" "$R2" -o "$REPORTS_DIR/$SAMPLE/" -n "$SAMPLE"_qc_report.html
 done < <(bash scripts/paired_fastqcs.sh "$FASTQC_DIR")
 
