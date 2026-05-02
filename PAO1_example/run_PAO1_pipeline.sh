@@ -31,19 +31,18 @@ ENV_NAME=$(sed -n 's/^name: //p' environment.yml)
 eval "$(conda shell.bash hook)"
 
 # create & activate env or activate & update env to match environment.yml
-#CONDA_ENVS=$(conda env list)
-#for env in "${CONDA_ENVS[@]}"; do
-#    if [[ "$env" == "$ENV_NAME" ]]; then
-#        conda activate "$ENV_NAME"
-#        conda env update --file environment.yml --prune
-#        break
-#    else
-#        conda env create -f environment.yml
-#        conda activate "$ENV_NAME"
-#    fi
-#done
+CONDA_ENVS=$(conda env list)
+for env in "${CONDA_ENVS[@]}"; do
+    if [[ "$env" == "$ENV_NAME" ]]; then
+        conda activate "$ENV_NAME"
+        conda env update --file environment.yml --prune
+        break
+    else
+        conda env create -f environment.yml
+        conda activate "$ENV_NAME"
+    fi
+done
 
-conda activate rnaseq_pipeline
 
 # Download RNA Seq data for PAO1 species
 bash scripts/01_download_data.sh "$DATA_DIR" "$SAMPLE_SRA_IDS"
