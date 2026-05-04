@@ -2,7 +2,7 @@
 
 ## Preparation
 - **GitHub Setup**
-  - Team members: __________________________  
+  - Team members: Amir Sadeghi and Lucy Sanders
 
 ## Data Retrieval
 - **NCBI SRA accessions used:**

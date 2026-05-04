@@ -11,6 +11,8 @@ PROJECT=$(get_param "$1" "$PROJECT" "" "PROJECT")
 
 # Annotation and Quantification
 #   Table of top 10 expressed genes
+bash scripts/trace.sh "Tabulating gene expression counts"
 bash scripts/top_genes.sh
 #   Heatmap of top 10 expressed genes
+bash scripts/trace.sh "Generating gene expression heatmap"
 python scripts/plot_heatmap.py "$PROJECT"

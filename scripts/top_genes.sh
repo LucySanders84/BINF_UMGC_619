@@ -50,6 +50,7 @@ HEADERS=("GeneID" "${SAMPLES[@]}" "Mean Count")
 printf "%s\n" "$(IFS=$'\t'; echo "${HEADERS[*]}")" > "$TOP_10_GENES"
 printf "%s\n" "$(IFS=$'\t'; echo "${HEADERS[*]}")" > "$ALL_GENES"
 
+bash scripts/trace.sh "Writing top 10 genes to $TOP_10_GENES"
 cat next.tmp >> "$ALL_GENES"
 head -n 10 next.tmp >> "$TOP_10_GENES"
 

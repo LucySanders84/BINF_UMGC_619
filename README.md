@@ -10,7 +10,7 @@ This project implements an RNA-seq analysis pipeline including:
 * Gene quantification
 * Visualization
 
-The pipeline is implemented using Bash scripts and organized for reproducibility.
+The pipeline implements Bash and Python scripts and is organized for reproducibility.
 
 ---
 
@@ -104,7 +104,7 @@ bash scripts/run_pipeline.sh {project_name} {data_directory} {project_destinatio
 
 
 6. **Visualization**
-   Create plots and heatmaps of expression data.
+   Create tables, plots and heatmaps of expression data.
    
    Tools
    - multiQC

@@ -6,4 +6,4 @@ message="$1"
 TIMESTAMP="$(date +"%Y-%m-%d %H:%M:%S")"
 
 # print message to console
-printf "\n%s RNA-SEQ pipeline: %s...\n" "$TIMESTAMP" "$message"
+printf "\n%s: %s...\n" "$TIMESTAMP" "$message"

@@ -13,9 +13,9 @@ OUT_FILE="${OUT_DIR}/alignment_metrics.tsv"
 
 # Header
 printf "Sample\tTotal_Reads\tMapping_Percent\n" > "$OUT_FILE"
-
 while IFS=$'\t' read -r LOG_FILE; do
     SAMPLE=$(basename "$LOG_FILE" "_hisat2.log")
+    bash scripts/trace.sh "Extracting total reads and mapping percent from $SAMPLE alignment log"
     # Extract total reads
     TOTAL_READS=$(
         awk '/reads; of these:/{print $1; exit}' "$LOG_FILE"
@@ -30,5 +30,7 @@ while IFS=$'\t' read -r LOG_FILE; do
     TOTAL_READS=${TOTAL_READS:-NA}
     MAPPING_PERCENT=${MAPPING_PERCENT:-NA}
 
+    # Output to file
+    bash scripts/trace.sh "Outputting alignment metrics to $OUT_FILE"
     printf "%s\t%s\t%s\n" "$SAMPLE" "$TOTAL_READS" "$MAPPING_PERCENT" >> "$OUT_FILE"
 done < <(bash scripts/get_files.sh "$PROJECT"/logs/*.log)
