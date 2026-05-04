@@ -31,11 +31,9 @@ The pipeline creates a project with the following structure:
 ```
 project_title/
 ├── data/           # aligned, raw, trimmed, and reference data
-├── logs/           # execution logs
 ├── reports/        # output reports
 └── results/        # output files and results
 ```
-
 ---
 
 ## Setup
@@ -70,27 +68,54 @@ bash scripts/run_pipeline.sh {project_name} {data_directory} {project_destinatio
 
 1. **Download Data**
    Retrieve RNA-seq FASTQ files from NCBI SRA.
+   
+   Tools
+   - prefetch
+   - fasterq-dump
+
 
 2. **Quality Control**
    Assess read quality using FastQC and MultiQC.
+   
+   Tools
+   - fastQC
+
 
 3. **Read Cleaning**
    Trim adapters and low-quality bases.
+   
+   Tools
+   - fastp
+
 
 4. **Alignment**
    Align reads to reference genome.
+   
+   Tools
+   - hisat2
+   - samtools
+
 
 5. **Quantification**
    Generate gene expression counts.
+   
+   Tools
+   - featurecounts
+
 
 6. **Visualization**
    Create plots and heatmaps of expression data.
+   
+   Tools
+   - multiQC
+   - pandas
+   - matplotlib
 
 ---
 
 ## Outputs
 
-Results are stored in the `results/` directory:
+Results from pipeline tools are stored in the `results/` directory:
 
 * QC reports
 * Trimmed reads
@@ -104,12 +129,16 @@ Analysis reports, tables and figures are stored in the `reports/` directory:
 
 ---
 ## Example Pipeline Run
-This repository provides an example of the pipeline using the Pseudomonas Aeruginosa genome and RNA sequencing data. 
+This repository provides an example of the pipeline using the Pseudomonas Aeruginosa genome and RNA-seq data from SRA.
+Assessions:
+- SRR14995084 
+- SRR14995085 
+- SRR14995086
 
-To run the example:
+To run the example, navigate to the pipeline root directory, then:
 
 ```commandline
-bash run_PAO1_pipeline.sh
+bash PAO1_example/run_PAO1_pipeline.sh
 ```
 ---
 
@@ -117,7 +146,6 @@ bash run_PAO1_pipeline.sh
 
 * All scripts are located in the `scripts/` directory.
 * The pipeline assumes required tools are installed via the conda environment.
-* Logs for each step can be found in the `logs/` directory.
 
 ---
 
