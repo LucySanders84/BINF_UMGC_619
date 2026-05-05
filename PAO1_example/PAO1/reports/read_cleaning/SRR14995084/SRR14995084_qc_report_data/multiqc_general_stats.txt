@@ -1,0 +1,3 @@
+Sample	FastQC_mqc-generalstats-fastqc-percent_duplicates	FastQC_mqc-generalstats-fastqc-percent_gc	FastQC_mqc-generalstats-fastqc-avg_sequence_length	FastQC_mqc-generalstats-fastqc-median_sequence_length	FastQC_mqc-generalstats-fastqc-percent_fails	FastQC_mqc-generalstats-fastqc-total_sequences
+PAO1_2 | results | qc | raw | SRR14995084_1	84.21155993122136	60.0	74.64994424	74	27.27272727272727	25000000.0
+PAO1_2 | results | qc | trimmed | SRR14995084_1	84.33567023763256	60.0	74.65941975801017	74	27.27272727272727	24865591.0

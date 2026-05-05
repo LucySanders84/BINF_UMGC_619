@@ -1,0 +1,4 @@
+Sample	Read Count	Median Quality	% >= Q20	% >= Q30	$ GC Content	% Adapter Content	Adapter	Adapter Content	% Deduplication	% Duplication
+SRR14995084	24865591	34	100	100	60	0.0108785	PolyA	low	16	84
+SRR14995085	24977148	34	100	100	60	0.00933653	PolyA	low	15	85
+SRR14995086	25853519	34	100	100	60	0.00850948	PolyA	low	15	85

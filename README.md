@@ -1,8 +1,8 @@
-# RNA-seq Pipeline Project
+# Microbial RNA-seq Pipeline Project
 
 ## Overview
 
-This project implements an RNA-seq analysis pipeline including:
+This project implements a microbial RNA-seq analysis pipeline including:
 
 * Quality control
 * Read trimming
@@ -10,7 +10,10 @@ This project implements an RNA-seq analysis pipeline including:
 * Gene quantification
 * Visualization
 
-The pipeline implements Bash and Python scripts and is organized for reproducibility.
+The pipeline utilizes Bash and Python scripts and is organized for reproducibility.
+
+Contributors performed an analysis of microbial RNA-seq samples from pseudomonas aeruginosa using the pipeline. 
+The results and reports from the analysis are available in the PAO1_example/PAO1 directory. 
 
 ---
 
@@ -31,6 +34,7 @@ The pipeline creates a project with the following structure:
 ```
 project_title/
 ├── data/           # aligned, raw, trimmed, and reference data
+├── logs/           # output logs
 ├── reports/        # output reports
 └── results/        # output files and results
 ```
@@ -130,7 +134,7 @@ Analysis reports, tables and figures are stored in the `reports/` directory:
 ---
 ## Example Pipeline Run
 This repository provides an example of the pipeline using the Pseudomonas Aeruginosa genome and RNA-seq data from SRA.
-Assessions:
+Accessions:
 - SRR14995084 
 - SRR14995085 
 - SRR14995086
@@ -142,6 +146,7 @@ bash PAO1_example/run_PAO1_pipeline.sh
 ```
 ---
 
+The PAO1_example/PAO1 directory contains results and reports from a run using SRR14995084, SRR14995085 and SRR14995086.
 ## Notes
 
 * All scripts are located in the `scripts/` directory.

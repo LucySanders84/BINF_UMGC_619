@@ -1,0 +1,3 @@
+Module	Section	Sample Name	Source
+FastQC	all_sections	SRR14995084_1	/mnt/c/BIFS619/rna_seq_pipeline/PAO1_2/results/qc/raw/SRR14995084_1_fastqc.zip
+FastQC	all_sections	SRR14995084_2	/mnt/c/BIFS619/rna_seq_pipeline/PAO1_2/results/qc/raw/SRR14995084_2_fastqc.zip
