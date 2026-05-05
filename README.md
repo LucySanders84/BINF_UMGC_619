@@ -12,8 +12,12 @@ This project implements a microbial RNA-seq analysis pipeline including:
 
 The pipeline utilizes Bash and Python scripts and is organized for reproducibility.
 
-Contributors performed an analysis of microbial RNA-seq samples from pseudomonas aeruginosa using the pipeline. 
+Contributors performed an analysis of microbial RNA-seq samples from pseudomonas aeruginosa using the pipeline 
+in a top-level execution script (`run_PAO1_pipeline.sh`). The execution can be replicated by running this script.
+ 
 The results and reports from the analysis are available in the PAO1_example/PAO1 directory. 
+
+
 
 ---
 
@@ -56,43 +60,51 @@ conda activate rna_seq_pipeline
 
 ---
 
-## Download Data
+## Downloading Data
 The pipeline runs with any paired-end RNA-Seq .fastq files, a microbial genome .fasta file and .gff annotation file. 
+So the pipeline can be utilized with pre-downloaded data, the download data step is decoupled from the rest of the pipeline. 
+The `run_pipeline.sh` script assumes RNA-seq data, genome reference and annotation files are already available locally.
+Users can obtain .fastq files by running `scripts/01_download_data.sh [SRR IDs]`. 
+
+`01_download_data.sh` retrieves RNA-seq FASTQ files from NCBI SRA.
+   
+   Tools
+   - prefetch
+   - fasterq-dump
+
+---
 ## Running the Pipeline
+
+Run the pipeline with the following arguments:
+1. **Project name:** An identifier for the project
+2. **Data directory:** The location of the RNA-seq .fastq files, genome reference and annotation file
+3. **Project destination:** The directory which will contain the output files after completion 
 
 Run the full pipeline:
 
 ```
-bash scripts/run_pipeline.sh {project_name} {data_directory} {project_destination_directory
+bash scripts/run_pipeline.sh [project_name] [data_directory] [project_destination_directory]
 ```
 
 ---
 
 ## Pipeline Steps
 
-1. **Download Data**
-   Retrieve RNA-seq FASTQ files from NCBI SRA.
-   
-   Tools
-   - prefetch
-   - fasterq-dump
-
-
-2. **Quality Control**
+1. **Quality Control**
    Assess read quality using FastQC and MultiQC.
    
    Tools
    - fastQC
 
 
-3. **Read Cleaning**
+2. **Read Cleaning**
    Trim adapters and low-quality bases.
    
    Tools
    - fastp
 
 
-4. **Alignment**
+3. **Alignment**
    Align reads to reference genome.
    
    Tools
@@ -100,14 +112,14 @@ bash scripts/run_pipeline.sh {project_name} {data_directory} {project_destinatio
    - samtools
 
 
-5. **Quantification**
+4. **Quantification**
    Generate gene expression counts.
    
    Tools
    - featurecounts
 
 
-6. **Visualization**
+5. **Visualization**
    Create tables, plots and heatmaps of expression data.
    
    Tools
